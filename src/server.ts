@@ -3,6 +3,7 @@ import express from "express";
 import helmet from "helmet";
 import hpp from "hpp";
 import tikeetiDatasource from "./datasource/tikeeti.datasource";
+import { errorHandler } from "./middlewares/error-handler";
 
 const app = express();
 const PORT = process.env.PORT! || '8000';
@@ -25,17 +26,20 @@ app.use(helmet());
 
 // test route
 app.get("/", (_req, res) => {
-  res.status(200).json(
-    { message: "Server is running" }
-  );
+  res.status(200).json({
+    message: "Server is running"
+  });
 });
 
 // custom middleware to check if route exists
 app.use((_req, res) => {
-  res.status(404).json(
-    { message: "This route does not exist" }
-  );
+  res.status(404).json({
+    message: "This route does not exist"
+  });
 });
+
+// call the error handler middleware
+app.use(errorHandler);
 
 // graceful shutdown
 async function gracefulShutdown() {

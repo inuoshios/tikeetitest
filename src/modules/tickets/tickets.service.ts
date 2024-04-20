@@ -2,30 +2,42 @@ import Ticket from "../../entities/ticket.entity";
 import { randomGenerator } from "../../utils/random-generator";
 import { BookTicket } from "./tickets.interface";
 
-export default class UserService {
+export default class TicketService {
   async bookTicket(payload: BookTicket) {
-    const ticket = await Ticket.create({
-      email: payload.email.toLowerCase(),
-      fullName: payload.fullName,
-      uniqueIdentifier: randomGenerator("alphanumeric", 10)
-    }).save();
+    try {
+      const ticket = await Ticket.create({
+        email: payload.email.toLowerCase(),
+        fullName: payload.fullName,
+        uniqueIdentifier: randomGenerator("alphanumeric", 10)
+      }).save();
 
-    return ticket;
+      return ticket;
+    } catch (err) {
+      throw err;
+    }
   };
 
   async viewAllTickets(email: string) {
-    const tickets = await Ticket.find({
-      where: { email }
-    });
+    try {
+      const tickets = await Ticket.find({
+        where: { email }
+      });
 
-    return tickets;
+      return tickets;
+    } catch (err) {
+      throw err;
+    }
   }
 
-  async getSingleTicket(uniqueIdentifier: string) {
-    const ticket = await Ticket.findOne({
-      where: { uniqueIdentifier: uniqueIdentifier }
-    });
+  async checkTicketStatus(uniqueIdentifier: string) {
+    try {
+      const ticket = await Ticket.findOne({
+        where: { uniqueIdentifier: uniqueIdentifier }
+      });
 
-    return ticket;
+      return ticket;
+    } catch (err) {
+      throw err;
+    }
   }
 }
