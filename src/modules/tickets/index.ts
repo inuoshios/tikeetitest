@@ -13,7 +13,7 @@ router.post(
   handler.bookTicket
 );
 
-router.get("/ticket/view-tickets", handler.bookTicket);
+router.get("/ticket/view-tickets/:email", handler.bookTicket);
 
 router.get(
   "/ticket/check-ticket-status",

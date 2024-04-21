@@ -4,6 +4,7 @@ import helmet from "helmet";
 import hpp from "hpp";
 import tikeetiDatasource from "./datasource/tikeeti.datasource";
 import { errorHandler } from "./middlewares/error-handler";
+import modules from "./modules";
 
 const app = express();
 const PORT = process.env.PORT! || '8000';
@@ -30,6 +31,8 @@ app.get("/", (_req, res) => {
     message: "Server is running"
   });
 });
+
+app.use(modules);
 
 // custom middleware to check if route exists
 app.use((_req, res) => {

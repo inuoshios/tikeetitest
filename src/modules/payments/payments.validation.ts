@@ -13,4 +13,11 @@ export const processPaymentSchema = z.object({
   })
 });
 
+export const confirmPaymentSchema = z.object({
+  reference: z.string({
+    required_error: "Please input a reference number",
+    invalid_type_error: "Please input a valid reference number"
+  })
+});
+
 export type ProcessPayment = z.infer<typeof processPaymentSchema>;
