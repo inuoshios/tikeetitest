@@ -4,6 +4,8 @@ export const processPaymentSchema = z.object({
   amount: z.number({
     required_error: "Amount is required",
     invalid_type_error: "Invalid amount. Try again"
+  }).int({
+    message: "Invalid number format"
   }).gte(0, {
     message: "Invalid amount. Try again"
   }),

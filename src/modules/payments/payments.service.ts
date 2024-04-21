@@ -1,5 +1,5 @@
 import Payment from "../../entities/payment.entity";
-import Ticket from "../../entities/ticket.entity";
+import Ticket, { TicketStatus } from "../../entities/ticket.entity";
 import { BadRequestException, NotFoundException } from "../../utils/custom-exceptions";
 import { randomGenerator } from "../../utils/random-generator";
 import { ProcessPayment } from "./payments.validation";
@@ -16,11 +16,20 @@ export default class PaymentService {
       throw new BadRequestException("Ticket has expired, please purchase a new one");
     }
 
+    const checkIfUserAlreadyPaid = await Ticket.findOne({
+      where: { id: payload.ticketId }, select: ['id']
+    });
+    if (checkIfUserAlreadyPaid) {
+      throw new BadRequestException("You've already paid for this ticket");
+    }
+
     const payment = await Payment.create({
       amount: payload.amount,
       ticketId: payload.ticketId,
       uniquePaymentReference: randomGenerator("alphanumeric", 40)
     }).save();
+
+    await Ticket.update({ id: payload.ticketId }, { status: TicketStatus.Completed });
 
     return payment;
   }
@@ -30,7 +39,7 @@ export default class PaymentService {
       where: { uniquePaymentReference: reference }
     });
     if (!payment) {
-      throw new NotFoundException("Payment does not exist");
+      throw new NotFoundException("Invalid reference number");
     }
 
     return payment;
