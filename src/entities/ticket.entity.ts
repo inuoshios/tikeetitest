@@ -19,13 +19,10 @@ export default class Ticket extends BaseEntity {
 
   @Column() uniqueIdentifier!: string;
 
-  // tinyint only uses 1byte
-  @Column({ type: "tinyint", default: TicketStatus.Pending })
+  @Column({ type: "smallint", default: TicketStatus.Pending })
   status!: TicketStatus;
 
   @Column() expiresAt!: Date;
-
-  @Column({ type: "tinyint", default: 0 }) isExpired!: number;
 
   // timestamps
   @CreateDateColumn() createdOn!: Date;

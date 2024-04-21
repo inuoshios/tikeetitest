@@ -12,9 +12,9 @@ export default class PaymentService {
         throw new NotFoundException("Ticket does not exists");
       }
 
-      if (ticket.isExpired) {
-        await Ticket.update({ id: payload.ticketId }, { status: 2 });
-        throw new BadRequestException("Ticket has already expired, please purchase a new one");
+      if (ticket.status === 2) {
+        // await Ticket.update({ id: payload.ticketId }, { status: 2 });
+        throw new BadRequestException("Ticket has expired, please purchase a new one");
       }
 
       const payment = await Payment.create({

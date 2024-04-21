@@ -1,5 +1,6 @@
+import { In } from "typeorm";
 import Ticket from "../../entities/ticket.entity";
-import { NotFoundException } from "../../utils/custom-exceptions";
+import { BadRequestException, NotFoundException } from "../../utils/custom-exceptions";
 import { randomGenerator } from "../../utils/random-generator";
 import { BookTicket } from "./tickets.validation";
 
@@ -10,6 +11,7 @@ export default class TicketService {
       const expirationMin = 15;
       const expirationTime = new Date();
       expirationTime.setMinutes(expirationTime.getMinutes() + expirationMin);
+      expirationTime.setSeconds(0, 0);
 
       const ticket = await Ticket.create({
         email: payload.email.toLowerCase(),
@@ -27,7 +29,7 @@ export default class TicketService {
   async viewAllTickets(email: string) {
     try {
       const tickets = await Ticket.find({
-        where: { email }
+        where: { email, status: In([0, 1]) }
       });
 
       return tickets;
@@ -42,7 +44,11 @@ export default class TicketService {
         where: { uniqueIdentifier: uniqueIdentifier }
       });
       if (!ticket) {
-        throw new NotFoundException("Ticket does not exists, or is expired");
+        throw new NotFoundException("Please enter a valid unique identifier");
+      }
+
+      if (ticket.status === 2) {
+        throw new BadRequestException("Ticket has expired, please purchase a new one");
       }
 
       return ticket;

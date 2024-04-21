@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import hpp from "hpp";
+import { expirationCron } from "./cron";
 import tikeetiDatasource from "./datasource/tikeeti.datasource";
 import { errorHandler } from "./middlewares/error-handler";
 import modules from "./modules";
@@ -51,10 +52,9 @@ async function gracefulShutdown() {
     await tikeetiDatasource.initialize();
     console.log("tikeeti datasource initialized successfully");
   } catch (err) {
-    console.log(
-      "an error occurred while initializing tikeeti datasource",
-      (err as Error).message
-    );
+    console.error("an error occurred while initializing tikeeti datasource", {
+      reason: (err as Error).message
+    });
   }
 
   const server = app.listen(PORT, () => {
@@ -65,11 +65,14 @@ async function gracefulShutdown() {
     try {
       // destroy connections during shutdown
       await tikeetiDatasource.destroy();
-      console.log("database closed successfully");
-      console.log("server shutdown successfully");
+      expirationCron.stop();
+      console.warn("database and cron closed successfully");
+      console.warn("server shutdown successfully");
       process.exit();
     } catch (err) {
-      console.log("an error occurred while shutting down server", (err as Error).message);
+      console.error("an error occurred while shutting down server", {
+        reason: (err as Error).message
+      });
       process.exit(1);
     }
   });
