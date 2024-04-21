@@ -1,6 +1,7 @@
 import Ticket from "../../entities/ticket.entity";
+import { NotFoundException } from "../../utils/custom-exceptions";
 import { randomGenerator } from "../../utils/random-generator";
-import { BookTicket } from "./tickets.interface";
+import { BookTicket } from "./tickets.validation";
 
 export default class TicketService {
   async bookTicket(payload: BookTicket) {
@@ -34,6 +35,9 @@ export default class TicketService {
       const ticket = await Ticket.findOne({
         where: { uniqueIdentifier: uniqueIdentifier }
       });
+      if (!ticket) {
+        throw new NotFoundException("Ticket does not exists, or is expired");
+      }
 
       return ticket;
     } catch (err) {

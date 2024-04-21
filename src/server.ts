@@ -50,7 +50,7 @@ async function gracefulShutdown() {
   } catch (err) {
     console.log(
       "an error occurred while initializing tikeeti datasource",
-      err.message
+      (err as Error).message
     );
   }
 
@@ -66,7 +66,7 @@ async function gracefulShutdown() {
       console.log("server shutdown successfully");
       process.exit();
     } catch (err) {
-      console.log("an error occurred while shutting down server", err.message);
+      console.log("an error occurred while shutting down server", (err as Error).message);
       process.exit(1);
     }
   });
