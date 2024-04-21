@@ -7,6 +7,7 @@ import { expirationCron } from "./cron";
 import tikeetiDatasource from "./datasource/tikeeti.datasource";
 import { errorHandler } from "./middlewares/error-handler";
 import modules from "./modules";
+import { rateLimiter } from "./utils/rate-limiter";
 
 const app = express();
 const PORT = process.env.PORT! || '8000';
@@ -26,6 +27,9 @@ app.use(cors());
 
 // helps secure express app by setting http response headers 
 app.use(helmet());
+
+// setup rate limiter
+app.use(rateLimiter);
 
 // test route
 app.get("/", (_req, res) => {
