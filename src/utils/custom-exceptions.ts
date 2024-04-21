@@ -1,3 +1,4 @@
+// custom error exceptions
 export abstract class CustomException extends Error {
   constructor(public message: string, public code: number) {
     super(message);

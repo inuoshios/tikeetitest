@@ -6,10 +6,16 @@ import { BookTicket } from "./tickets.validation";
 export default class TicketService {
   async bookTicket(payload: BookTicket) {
     try {
+      // set expiration minutes
+      const expirationMin = 15;
+      const expirationTime = new Date();
+      expirationTime.setMinutes(expirationTime.getMinutes() + expirationMin);
+
       const ticket = await Ticket.create({
         email: payload.email.toLowerCase(),
         fullName: payload.fullName,
-        uniqueIdentifier: randomGenerator("alphanumeric", 10)
+        uniqueIdentifier: randomGenerator("alphanumeric", 10),
+        expiresAt: expirationTime
       }).save();
 
       return ticket;
