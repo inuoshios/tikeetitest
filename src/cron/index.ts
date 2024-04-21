@@ -1,5 +1,4 @@
 import cron from "node-cron";
-import { Equal } from "typeorm";
 import Ticket, { TicketStatus } from "../entities/ticket.entity";
 
 // expirationCron executes every second
@@ -10,7 +9,7 @@ export const expirationCron = cron.schedule("*/1 * * * *", async () => {
     const expiredTickets = await Ticket.find({
       where: {
         status: TicketStatus.Pending,
-        expiresAt: Equal(currentTime)
+        expiresAt: currentTime
       }
     });
 

@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import "express-async-errors";
 import helmet from "helmet";
 import hpp from "hpp";
 import { expirationCron } from "./cron";

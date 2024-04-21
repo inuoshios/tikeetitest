@@ -6,54 +6,46 @@ import { BookTicket } from "./tickets.validation";
 
 export default class TicketService {
   async bookTicket(payload: BookTicket) {
-    try {
-      // set expiration minutes
-      const expirationMin = 15;
-      const expirationTime = new Date();
-      expirationTime.setMinutes(expirationTime.getMinutes() + expirationMin);
-      expirationTime.setSeconds(0, 0);
+    // set expiration minutes
+    const expirationMin = 15;
+    const expirationTime = new Date();
+    expirationTime.setMinutes(expirationTime.getMinutes() + expirationMin);
+    expirationTime.setSeconds(0, 0);
 
-      const ticket = await Ticket.create({
-        email: payload.email.toLowerCase(),
-        fullName: payload.fullName,
-        uniqueIdentifier: randomGenerator("alphanumeric", 10),
-        expiresAt: expirationTime
-      }).save();
+    const ticket = await Ticket.create({
+      email: payload.email.toLowerCase(),
+      fullName: payload.fullName,
+      uniqueIdentifier: randomGenerator("alphanumeric", 10),
+      expiresAt: expirationTime
+    }).save();
 
-      return ticket;
-    } catch (err) {
-      throw err;
-    }
+    return ticket;
   };
 
   async viewAllTickets(email: string) {
-    try {
-      const tickets = await Ticket.find({
-        where: { email, status: In([0, 1]) }
-      });
+    const tickets = await Ticket.find({
+      where: { email, status: In([0, 1]) }
+    });
 
-      return tickets;
-    } catch (err) {
-      throw err;
+    if (!tickets.length) {
+      return { message: "You have no tickets" };
     }
+
+    return tickets;
   }
 
   async checkTicketStatus(uniqueIdentifier: string) {
-    try {
-      const ticket = await Ticket.findOne({
-        where: { uniqueIdentifier: uniqueIdentifier }
-      });
-      if (!ticket) {
-        throw new NotFoundException("Please enter a valid unique identifier");
-      }
-
-      if (ticket.status === 2) {
-        throw new BadRequestException("Ticket has expired, please purchase a new one");
-      }
-
-      return ticket;
-    } catch (err) {
-      throw err;
+    const ticket = await Ticket.findOne({
+      where: { uniqueIdentifier: uniqueIdentifier }
+    });
+    if (!ticket) {
+      throw new NotFoundException("Please enter a valid unique identifier");
     }
+
+    if (ticket.status === 2) {
+      throw new BadRequestException("Ticket has expired, please purchase a new one");
+    }
+
+    return ticket;
   }
 }

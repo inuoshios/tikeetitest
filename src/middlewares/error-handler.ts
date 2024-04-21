@@ -9,7 +9,7 @@ export function errorHandler(err: Error, _req: Request, res: Response, _next: Ne
       message: zodIssue.message
     }));
     console.error("zod validation error", zodErrors);
-    res.status(400).json({
+    return res.status(400).json({
       message: "Validation Error", details: zodErrors
     });
   }
@@ -22,7 +22,7 @@ export function errorHandler(err: Error, _req: Request, res: Response, _next: Ne
   }
 
   console.error("an exception occurred", {
-    reason: err.message, stack: err?.stack
+    reason: err.message
   });
   return res.status(500).json({
     message: "An error occurred, please try again"
