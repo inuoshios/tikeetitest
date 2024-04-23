@@ -3,6 +3,7 @@ import { validationSchemaBody, validationSchemaQuery } from "../../middlewares/r
 import PaymentController from "./payments.controller";
 import { confirmPaymentSchema, processPaymentSchema } from "./payments.validation";
 
+// payment routes
 const router = Router();
 const handler = new PaymentController();
 

@@ -1,0 +1,6 @@
+.git
+node_modules
+# logs
+*.logs
+*.log
+README.md
