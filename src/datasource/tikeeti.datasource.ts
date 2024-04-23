@@ -20,7 +20,5 @@ export default new DataSource({
   migrations: [path.resolve(__dirname, "../migrations/**/*.ts")],
   namingStrategy: new SnakeNamingStrategy(),
   migrationsTableName: "tikeeti_migrations",
-  // logging: process.env.NODE_ENV === "development",
   poolSize: 15,
-  // synchronize: process.env.NODE_ENV === "development",
 });

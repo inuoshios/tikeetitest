@@ -7,6 +7,7 @@ import { expirationCron } from "./cron";
 import tikeetiDatasource from "./datasource/tikeeti.datasource";
 import { errorHandler } from "./middlewares/error-handler";
 import modules from "./modules";
+import { errorLogger, infoLogger } from "./utils/logger";
 import { rateLimiter } from "./utils/rate-limiter";
 
 const app = express();
@@ -55,15 +56,15 @@ async function gracefulShutdown() {
   try {
     // initialize datasource
     await tikeetiDatasource.initialize();
-    console.log("tikeeti datasource initialized successfully");
+    infoLogger("tikeeti datasource initialized successfully");
   } catch (err) {
-    console.error("an error occurred while initializing tikeeti datasource", {
+    errorLogger("an error occurred while initializing tikeeti datasource", {
       reason: (err as Error).message
     });
   }
 
   const server = app.listen(PORT, () => {
-    console.log(`Assessment server is running on port ${PORT}`);
+    infoLogger(`Assessment server is running on port ${PORT}`);
   });
 
   const shutdown = () => server.close(async () => {
@@ -71,11 +72,11 @@ async function gracefulShutdown() {
       // destroy connections during shutdown
       await tikeetiDatasource.destroy();
       expirationCron.stop();
-      console.warn("database and cron closed successfully");
-      console.warn("server shutdown successfully");
+      infoLogger("database and cron closed successfully");
+      infoLogger("server shutdown successfully");
       process.exit();
     } catch (err) {
-      console.error("an error occurred while shutting down server", {
+      errorLogger("an error occurred while shutting down server", {
         reason: (err as Error).message
       });
       process.exit(1);

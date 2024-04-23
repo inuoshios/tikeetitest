@@ -1,5 +1,6 @@
 import cron from "node-cron";
 import Ticket, { TicketStatus } from "../entities/ticket.entity";
+import { errorLogger } from "../utils/logger";
 
 // expirationCron executes every minute
 export const expirationCron = cron.schedule("*/1 * * * *", async () => {
@@ -18,7 +19,7 @@ export const expirationCron = cron.schedule("*/1 * * * *", async () => {
       await Ticket.update({ id: ticket.id }, { status: TicketStatus.Expired });
     }));
   } catch (err) {
-    console.error("error checking expired tickets", {
+    errorLogger("error checking expired tickets", {
       reason: (err as Error).message
     });
   }
