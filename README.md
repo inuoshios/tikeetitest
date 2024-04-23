@@ -2,7 +2,14 @@
 
 A backend API for a ticket booking system.
 
-[POSTMAN DOCUMENTATION](https://documenter.getpostman.com/view/23408559/2sA3Bq4rCS). 
+[POSTMAN DOCUMENTATION](https://documenter.getpostman.com/view/23408559/2sA3Bq4rCS).
+
+## STACKS
+- Typescript
+- Postgres
+- Typeorm
+- Jest
+- Docker
 
 ## Installation
 Clone the repository from the GitHub.
@@ -18,6 +25,8 @@ Create an environment variable file.
 touch .env
 ```
 
+There is an [.example.env](.env.example) that can be used to fill the env.
+
 ## Using Docker
 
 Build the image
@@ -32,9 +41,15 @@ docker compose down
 ```
 
 ## NPM
-> This should be used if you have postgres installed on your local machine. If you do, add your local postgres connection to the environment variables.
+> This should be used if you have postgres installed on your local machine. If you do, add your local postgres connection to the environment variables. Include a `DATABASE_HOST` in the env variable if you are using this method.
 - Install dependencies `yarn install`
 - Run the application `yarn run dev`
+
+## MIGRATION
+After a successfull connection to the database. You can run your database migration
+```sh
+yarn run migration:run
+```
 
 ## USAGE
 - Once the application is running, users can interact with the API using HTTP requests.
