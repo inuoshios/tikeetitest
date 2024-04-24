@@ -24,7 +24,8 @@ export default class TicketService {
 
   async viewAllTickets(email: string) {
     const tickets = await Ticket.find({
-      where: { email, status: In([0, 1]) }
+      where: { email, status: In([0, 1]) },
+      order: { id: "DESC" }
     });
 
     if (!tickets.length) {

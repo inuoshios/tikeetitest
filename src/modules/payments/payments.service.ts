@@ -18,8 +18,8 @@ export default class PaymentService {
     }
 
     // check if user already paid, if they already did, raise an exception
-    const checkIfUserAlreadyPaid = await Ticket.findOne({
-      where: { id: payload.ticketId }, select: ['id']
+    const checkIfUserAlreadyPaid = await Payment.findOne({
+      where: { ticketId: payload.ticketId }, select: ['id']
     });
     if (checkIfUserAlreadyPaid) {
       throw new BadRequestException("You've already paid for this ticket");
@@ -40,7 +40,8 @@ export default class PaymentService {
   // confirm a payment via its referenceNumber
   async confirmPayment(reference: string) {
     const payment = await Payment.findOne({
-      where: { uniquePaymentReference: reference }
+      where: { uniquePaymentReference: reference },
+      order: { id: "DESC" }
     });
     if (!payment) {
       throw new NotFoundException("Invalid reference number");

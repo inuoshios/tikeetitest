@@ -14,4 +14,4 @@ RUN yarn build
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "yarn run migration:run && node dist/server.js"]
+CMD ["sh", "-c", "yarn run migration:run && node ./dist/server.js"]

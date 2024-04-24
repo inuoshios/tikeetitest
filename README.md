@@ -40,7 +40,7 @@ docker compose up
 docker compose down
 ```
 
-## NPM
+## YARN
 > This should be used if you have postgres installed on your local machine. If you do, add your local postgres connection to the environment variables. Include a `DATABASE_HOST` in the env variable if you are using this method.
 - Install dependencies `yarn install`
 - Run the application `yarn run dev`
@@ -62,7 +62,7 @@ yarn run migration:run
 
 - **View Tickets** (`/ticket/view-tickets/{email}`): View tickets returns the ticket associated with a user (it only returns tickets that are not expired). See postman for endpoint documentation.
 
-- **Check Ticket Status** (`/ticket/check-ticket-status?uniqueIdentifier=Ism1a2zBUf`): This endpoint is used to check a ticket status using the ticket unique identifier. If the unique identifier is wronng, it throws an error, it also throws an error if the ticket is already expired. See postman for endpoint documentation.
+- **Check Ticket Status** (`/ticket/check-ticket-status?uniqueIdentifier=Ism1a2zBUf`): This endpoint is used to check a ticket status using the ticket unique identifier. If the unique identifier is wrong, it throws an error, it also throws an error if the ticket is already expired. See postman for endpoint documentation.
 
 > Payment
 
@@ -72,7 +72,9 @@ yarn run migration:run
 
 ## Features
 - Rate Limiting: A rate limiter was setup to prevent abuse of the booking endpoint. A (guest) can make 100 request in a 10 minutes duration.
-- Dockerization: You can run your application via Docker.
+- Dockerization: You can run your application via Docker. See [here](#using-docker) for installation and usage.
+- Tickets expiration after 15 minutes if no payment is made. The `node-cron` module was used to achieve this.
+- Tests.
 
 ## Unit Testing
 There's some predefined tests, please run `yarn run test`.
