@@ -1,31 +1,6 @@
-# TIKEETI BACKEND ASSESSMENT
+# TIKEETI TEST
 
 A backend API for a ticket booking system.
-
-[POSTMAN DOCUMENTATION](https://documenter.getpostman.com/view/23408559/2sA3Bq4rCS).
-
-## STACKS
-- Typescript
-- Postgres
-- Typeorm
-- Jest
-- Docker
-
-## Installation
-Clone the repository from the GitHub.
-```sh
-git@github.com:inuoshios/tikeeti-assessment.git
-```
-Navigate into the folder.
-```sh
-cd tikeeti-assessment
-```
-Create an environment variable file.
-```sh
-touch .env
-```
-
-There is an [.example.env](.env.example) that can be used to fill the env.
 
 ## Using Docker
 
@@ -51,10 +26,6 @@ After a successfull connection to the database. You can run your database migrat
 yarn run migration:run
 ```
 
-## USAGE
-- Once the application is running, users can interact with the API using HTTP requests.
-- You can also checkout the API documentation [HERE](https://documenter.getpostman.com/view/23408559/2sA3Bq4rCS).
-
 ## ENDPOINTS
 > Tickets
 
@@ -75,6 +46,3 @@ yarn run migration:run
 - Dockerization: You can run your application via Docker. See [here](#using-docker) for installation and usage.
 - Tickets expiration after 15 minutes if no payment is made. The `node-cron` module was used to achieve this.
 - Tests.
-
-## Unit Testing
-There's some predefined tests, please run `yarn run test`.
